@@ -1,0 +1,25 @@
+with temp as (
+select id, recordDate, temperature, 
+lag(temperature) over(order by recordDate) as prev_temp,
+lag(recordDate) over(order by recordDate) as prev_day
+from Weather)
+
+select coalesce(id, null) as Id
+from temp
+where temperature > prev_temp
+and DATEDIFF(recordDate, prev_day) = 1;
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
