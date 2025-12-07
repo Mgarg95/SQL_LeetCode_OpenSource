@@ -1,0 +1,26 @@
+with all_rides as (                      #This CTE finds all the rides where user is not banned(client or driver) in the date range.
+        select t.id
+        from Trips t 
+        join Users u1 on t.client_id = u1.users_id 
+        join  Users u2 on t.driver_id = u.users_id
+        where u1.banned = 'no' and u2.banned = 'no'
+        and request_ at between '2013-10-01' and '2013-10-03')
+
+
+    cancelled_rides as (                  #This CTE finds all the rides that were cancelled - taken from all_rides
+        select id, request_at
+        from all_rides
+        where status in ('cancelled_by_driver' , 'cancelled_by_client')
+    ),
+
+    rates as                               #Calculating the cancellation rate
+    (select request_at as Day,
+        round((select count(*) from cancelled_rides c where c.request_at = a.request_at)
+        / count(*), 2) as 'Cancellation Rate'
+    from all_rides a
+    group by request_at
+    )
+
+    select *                               #Printing the date with the cancellation rate
+    from rates
+    order by day
