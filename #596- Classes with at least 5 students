@@ -7,3 +7,9 @@ select class
 from no_of_students
 where count_students >=5
 group by class
+
+#Using Having
+select class
+from Courses
+group by class
+having count(student) >=5
