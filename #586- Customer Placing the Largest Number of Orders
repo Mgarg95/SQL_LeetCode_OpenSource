@@ -1,0 +1,9 @@
+with orders_counted as (
+    select customer_number , 
+count(order_number) over (partition by customer_number order by customer_number) as order_count
+from Orders)
+
+select customer_number
+from orders_counted
+order by order_count desc
+limit 1
