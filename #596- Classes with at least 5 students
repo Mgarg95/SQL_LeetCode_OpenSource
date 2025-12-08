@@ -1,0 +1,9 @@
+#Using CTE
+with no_of_students as (
+    select class, count(student) over (partition by class) as count_students
+from Courses)
+
+select class 
+from no_of_students
+where count_students >=5
+group by class
