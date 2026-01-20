@@ -1,0 +1,12 @@
+# Solution 1 - Using IF
+select x, y, z,
+if (((x+y)>z and (x+z)>y and (y+z)>x), 'Yes', 'No') as triangle
+from Triangle
+
+#Solution 2 - Using CASE
+select x,y,z, 
+    (case 
+        when (x+y) >z and (y+z)>x and (x+z)>y then 'Yes'
+        else 'No'
+    end) as triangle
+from Triangle
