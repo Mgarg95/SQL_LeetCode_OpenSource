@@ -1,0 +1,10 @@
+select a.student_id, a.subject, a.score as first_score, b.score as latest_score
+from Scores a left join Scores b
+on a.student_id = b.student_id
+and a.subject = b.subject
+
+where a.exam_date = (select min(exam_date) from scores where student_id = a.student_id and subject = a.subject)
+and b.exam_date = (select max(exam_date) from scores where student_id = b.student_id and subject = b.subject)
+
+and a.score < b.score
+order by a.student_id, a.subject
